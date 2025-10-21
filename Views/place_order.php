@@ -8,8 +8,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // ---------- CONFIG ----------
-define('PAYPAL_CLIENT_ID', 'AXJRg47uqcWc9x-KSQYRj6t5e9g4eASYQ4sFMUz18vcTslQHhmqNyA1GBdH8UH-9TfWD0st5uySphdmR');
-define('PAYPAL_SECRET', 'EIRSj8hnzrgD6uazlDDyUFU5FbDlWZNDB3T6m-qhHM1lFlBs2BMRhqhw6uhdXHxadYFu_FX4pHKc04IB');
+define('PAYPAL_CLIENT_ID', 'Enter_your_client_id');
+define('PAYPAL_SECRET', 'Enter_your_paypal_secret');
 define('PAYPAL_BASE', 'https://api-m.sandbox.paypal.com'); // ✅ Correct endpoint
 
 define('SMTP_HOST', 'smtp.gmail.com');
