@@ -39,8 +39,7 @@ if ($items->num_rows == 0) {
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- ✅ Use USD to match backend -->
-    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AT8RSepAgf1gElnBaopMC0reeyi5yyBsIbryIdQG1yAB2lxx_M0OLGncjEn3V4Z_i-V0hDqiND007VUa&currency=USD"></script> -->
-    <script src="https://www.paypal.com/sdk/js?client-id=ARA8RZQrQJtCpMyhM1HTc8ML86dBrIS0eyNnGw39H2051LatHz3H34dwyQVJopgoBBE9AVIusiFyz2jk&currency=USD"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=your_client_id&currency=USD"></script>
 
     <style>
         body { background-color: #f8f9fa; }

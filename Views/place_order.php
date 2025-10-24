@@ -14,11 +14,9 @@ use PHPMailer\PHPMailer\Exception;
 
 
 // ---------- CONFIG ----------
-define('PAYPAL_CLIENT_ID', 'ARA8RZQrQJtCpMyhM1HTc8ML86dBrIS0eyNnGw39H2051LatHz3H34dwyQVJopgoBBE9AVIusiFyz2jk');
-define('PAYPAL_SECRET', 'EMuyoraAGY-3MAvPwxgnWxdfJsghKtpTs95sL_Bgc1Z5FhwmKYQxw5dWtk3OdJ0lTchANy3irDaTGGwQ');
+define('PAYPAL_CLIENT_ID', 'client id');
+define('PAYPAL_SECRET', 'secret Key');
 
-// define('PAYPAL_CLIENT_ID', 'AT8RSepAgf1gElnBaopMC0reeyi5yyBsIbryIdQG1yAB2lxx_M0OLGncjEn3V4Z_i-V0hDqiND007VUa');
-// define('PAYPAL_SECRET', 'EJrJd5L5qa9pTDNkTIv1-JsLjM4NBnsKP6-exw7rlp7wL2PjVwpn6_7ZREyjYI5UEsIYGmMRrtHnLzF_');
 define('PAYPAL_BASE', 'https://api-m.sandbox.paypal.com');
 
 // Email Config
