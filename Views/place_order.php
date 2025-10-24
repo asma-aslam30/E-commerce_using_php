@@ -15,14 +15,14 @@ use PHPMailer\PHPMailer\Exception;
 <<<<<<< HEAD
 =======
 // ---------- CONFIG ----------
-define('PAYPAL_CLIENT_ID', 'Enter_your_client_id');
-define('PAYPAL_SECRET', 'Enter_your_paypal_secret');
+define('PAYPAL_CLIENT_ID', 'AXbmCprgHhbefFilx3Oy-8KocEGMBhNqOj01iirOVY1hdbpNG9ZcGmmi_Cw7AmeKHl7yA6veLp26SCSF');
+define('PAYPAL_SECRET', 'EPXDFfZyWJ1jN6VtXtA2xCTKAlKHx_tuZI3EF_6ZfseJT95GPt7KUYaa8FjuBO4GVQ0bvyAYp37u5qo2');
 define('PAYPAL_BASE', 'https://api-m.sandbox.paypal.com'); // ✅ Correct endpoint
 >>>>>>> 9050adbac01ff0aee4a36042e3750379e284efef
 
 // ---------- CONFIG ----------
-define('PAYPAL_CLIENT_ID', 'client id');
-define('PAYPAL_SECRET', 'secret Key');
+define('PAYPAL_CLIENT_ID', 'AXbmCprgHhbefFilx3Oy-8KocEGMBhNqOj01iirOVY1hdbpNG9ZcGmmi_Cw7AmeKHl7yA6veLp26SCSF');
+define('PAYPAL_SECRET', 'EPXDFfZyWJ1jN6VtXtA2xCTKAlKHx_tuZI3EF_6ZfseJT95GPt7KUYaa8FjuBO4GVQ0bvyAYp37u5qo2');
 
 define('PAYPAL_BASE', 'https://api-m.sandbox.paypal.com');
 
