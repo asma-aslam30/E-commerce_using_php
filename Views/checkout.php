@@ -7,15 +7,15 @@ use PHPMailer\PHPMailer\Exception;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-//  User login check
+// ---------- USER LOGIN CHECK ----------
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../Views/user_login.php");
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = (int)$_SESSION['user_id'];
 
-//  Fetch order items
+// ---------- FETCH ORDER ITEMS ----------
 $query = "SELECT oi.*, p.product_name, p.product_price
           FROM tbl_order_items oi
           JOIN tbl_order o ON oi.order_id = o.order_id
@@ -38,7 +38,9 @@ if ($items->num_rows == 0) {
     <meta charset="UTF-8">
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://www.paypal.com/sdk/js?client-id=AT8RSepAgf1gElnBaopMC0reeyi5yyBsIbryIdQG1yAB2lxx_M0OLGncjEn3V4Z_i-V0hDqiND007VUa&currency=EUR"></script>
+    <!-- ✅ Use USD to match backend -->
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AT8RSepAgf1gElnBaopMC0reeyi5yyBsIbryIdQG1yAB2lxx_M0OLGncjEn3V4Z_i-V0hDqiND007VUa&currency=USD"></script> -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ARA8RZQrQJtCpMyhM1HTc8ML86dBrIS0eyNnGw39H2051LatHz3H34dwyQVJopgoBBE9AVIusiFyz2jk&currency=USD"></script>
 
     <style>
         body { background-color: #f8f9fa; }
@@ -56,7 +58,7 @@ if ($items->num_rows == 0) {
                 <div class="card-body p-5">
                     <h2 class="text-center text-primary fw-bold mb-4">Checkout</h2>
 
-                    <!--  Order Summary -->
+                    <!-- Order Summary -->
                     <div class="table-responsive mb-4">
                         <table class="table align-middle text-center">
                             <thead class="table-light">
@@ -77,7 +79,7 @@ if ($items->num_rows == 0) {
                                 <tr>
                                     <td><?= htmlspecialchars($row['product_name']) ?></td>
                                     <td>$<?= number_format($row['product_price'], 2) ?></td>
-                                    <td><?= $row['quantity'] ?></td>
+                                    <td><?= (int)$row['quantity'] ?></td>
                                     <td class="text-success fw-bold">$<?= number_format($sub, 2) ?></td>
                                 </tr>
                                 <?php endwhile; ?>
@@ -91,7 +93,7 @@ if ($items->num_rows == 0) {
                         </table>
                     </div>
 
-                    <!--  Checkout Form -->
+                    <!-- Checkout Form -->
                     <form id="checkoutForm" action="place_order.php" method="POST" novalidate>
                         <h4 class="mb-3 text-primary fw-semibold">Shipping Information</h4>
                         <div class="row g-3">
@@ -140,7 +142,7 @@ if ($items->num_rows == 0) {
 
                         <hr class="my-4">
 
-                        <!--  Payment Method -->
+                        <!-- Payment Method -->
                         <h4 class="mb-3 text-primary fw-semibold">Select Payment Method</h4>
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="radio" name="payment_method" id="cod" value="COD" checked>
@@ -166,38 +168,87 @@ if ($items->num_rows == 0) {
 
 <?php include_once '../web_layout/web_footer.php'; ?>
 
-<!-- ✅ JavaScript Frontend Validation -->
+<!-- ✅ JS VALIDATION + PAYPAL -->
 <script>
 document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     let valid = true;
     document.querySelectorAll('.error').forEach(el => el.textContent = "");
 
-    const name = document.querySelector('[name="full_name"]').value.trim();
-    const email = document.querySelector('[name="checkout_email"]').value.trim();
-    const phone = document.querySelector('[name="contact_number"]').value.trim();
-    const city = document.querySelector('[name="city"]').value.trim();
-    const address = document.querySelector('[name="shipping_address"]').value.trim();
-    const province = document.querySelector('[name="province"]').value.trim();
-    const zip = document.querySelector('[name="postal_code"]').value.trim();
+    const fields = {
+        name: document.querySelector('[name="full_name"]').value.trim(),
+        email: document.querySelector('[name="checkout_email"]').value.trim(),
+        phone: document.querySelector('[name="contact_number"]').value.trim(),
+        city: document.querySelector('[name="city"]').value.trim(),
+        address: document.querySelector('[name="shipping_address"]').value.trim(),
+        province: document.querySelector('[name="province"]').value.trim(),
+        zip: document.querySelector('[name="postal_code"]').value.trim(),
+    };
 
-    if (name === "") { document.getElementById('nameErr').textContent = "*Full name is required"; valid = false; }
-    if (email === "") { document.getElementById('emailErr').textContent = "*Email is required"; valid = false; }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (fields.name === "") { document.getElementById('nameErr').textContent = "*Full name is required"; valid = false; }
+    if (fields.email === "") { document.getElementById('emailErr').textContent = "*Email is required"; valid = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
         document.getElementById('emailErr').textContent = "*Invalid email format"; valid = false;
     }
-    if (phone === "") { document.getElementById('phoneErr').textContent = "*Phone number is required"; valid = false; }
-    else if (!/^\d{11}$/.test(phone)) {
+    if (fields.phone === "") { document.getElementById('phoneErr').textContent = "*Phone number is required"; valid = false; }
+    else if (!/^\d{11}$/.test(fields.phone)) {
         document.getElementById('phoneErr').textContent = "*Enter 11 digits only"; valid = false;
     }
-    if (city === "") { document.getElementById('cityErr').textContent = "*City is required"; valid = false; }
-    if (address === "") { document.getElementById('addressErr').textContent = "*Address is required"; valid = false; }
-    if (province === "") { document.getElementById('provinceErr').textContent = "*Province is required"; valid = false; }
-    if (zip === "") { document.getElementById('zipErr').textContent = "*Zip code is required"; valid = false; }
+    if (fields.city === "") { document.getElementById('cityErr').textContent = "*City is required"; valid = false; }
+    if (fields.address === "") { document.getElementById('addressErr').textContent = "*Address is required"; valid = false; }
+    if (fields.province === "") { document.getElementById('provinceErr').textContent = "*Province is required"; valid = false; }
+    if (fields.zip === "") { document.getElementById('zipErr').textContent = "*Zip code is required"; valid = false; }
 
-    if (!valid) e.preventDefault();
+    if (!valid) {
+        e.preventDefault();
+        return false;
+    }
 });
 
-// ✅ PayPal / COD Toggle
+// // ✅ PayPal / COD Toggle
+// document.addEventListener("DOMContentLoaded", () => {
+//     const codRadio = document.getElementById("cod");
+//     const paypalRadio = document.getElementById("paypal");
+//     const submitBtn = document.getElementById("submitBtn");
+//     const paypalContainer = document.getElementById("paypal-button-container");
+//     const form = document.getElementById("checkoutForm");
+
+//     paypalRadio.addEventListener("change", () => {
+//         paypalContainer.style.display = "block";
+//         submitBtn.style.display = "none";
+//     });
+//     codRadio.addEventListener("change", () => {
+//         paypalContainer.style.display = "none";
+//         submitBtn.style.display = "block";
+//     });
+
+//     paypal.Buttons({
+//         createOrder: (data, actions) => {
+//             const total = <?= $grandTotal ?>;
+//             return actions.order.create({
+//                 purchase_units: [{
+//                     amount: { value: total.toFixed(2), currency_code: 'USD' }
+//                 }]
+//             });
+//         },
+//         onApprove: (data, actions) => {
+//             return actions.order.capture().then(details => {
+//                 alert('✅ Payment completed by ' + details.payer.name.given_name);
+//                 const paypalField = document.createElement('input');
+//                 paypalField.type = 'hidden';
+//                 paypalField.name = 'paypal_order_id';
+//                 paypalField.value = data.orderID;
+//                 form.appendChild(paypalField);
+//                 form.submit();
+//             });
+//         },
+//         onError: err => {
+//             alert('❌ Payment failed. Try again.');
+//             console.error(err);
+//         }
+//     }).render('#paypal-button-container');
+// });
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const codRadio = document.getElementById("cod");
     const paypalRadio = document.getElementById("paypal");
@@ -205,41 +256,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const paypalContainer = document.getElementById("paypal-button-container");
     const form = document.getElementById("checkoutForm");
 
+    // Toggle display on radio change
     paypalRadio.addEventListener("change", () => {
         paypalContainer.style.display = "block";
         submitBtn.style.display = "none";
     });
+
     codRadio.addEventListener("change", () => {
         paypalContainer.style.display = "none";
         submitBtn.style.display = "block";
     });
 
+    // ✅ Render PayPal buttons only if PayPal selected
     paypal.Buttons({
-        createOrder: function(data, actions) {
-            const total = <?= $grandTotal ?>;
+        createOrder: (data, actions) => {
+            const total = <?= json_encode($grandTotal) ?>; // PHP value safely injected
             return actions.order.create({
                 purchase_units: [{
-                    amount: { value: total.toFixed(2), currency_code: 'USD' }
+                    amount: {
+                        value: parseFloat(total).toFixed(2),
+                        currency_code: 'USD'
+                    }
                 }]
             });
         },
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                alert(' Payment completed by ' + details.payer.name.given_name);
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(details => {
+                alert('✅ Payment completed by ' + details.payer.name.given_name);
+
+                // Hidden field add to send PayPal order ID
                 const paypalField = document.createElement('input');
                 paypalField.type = 'hidden';
                 paypalField.name = 'paypal_order_id';
                 paypalField.value = data.orderID;
                 form.appendChild(paypalField);
+
+                // Submit the form after successful payment
                 form.submit();
             });
         },
-        onError: function(err) {
+        onError: err => {
             alert('❌ Payment failed. Try again.');
             console.error(err);
         }
     }).render('#paypal-button-container');
 });
+
+
 </script>
 
 </body>
