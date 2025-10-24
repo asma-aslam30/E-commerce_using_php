@@ -12,6 +12,13 @@ require '../vendor/phpmailer/phpmailer/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+<<<<<<< HEAD
+=======
+// ---------- CONFIG ----------
+define('PAYPAL_CLIENT_ID', 'Enter_your_client_id');
+define('PAYPAL_SECRET', 'Enter_your_paypal_secret');
+define('PAYPAL_BASE', 'https://api-m.sandbox.paypal.com'); // ✅ Correct endpoint
+>>>>>>> 9050adbac01ff0aee4a36042e3750379e284efef
 
 // ---------- CONFIG ----------
 define('PAYPAL_CLIENT_ID', 'client id');
@@ -220,3 +227,7 @@ if (!empty($user_email)) {
 echo "<script>  window.location='order_success.php';</script>";
 exit;
 ?>
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 9050adbac01ff0aee4a36042e3750379e284efef
